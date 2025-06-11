@@ -5,7 +5,17 @@ import { parabola90 } from './parabola90';
 import { sinWave } from './sinWave';
 import { invertedSinWave } from './invertedSinWave';
 
-export const allAnimations = [
+export interface Animation {
+  key: string;
+  label: string;
+  draw: (
+    ctx: CanvasRenderingContext2D,
+    params: { width: number; height: number; verticalLineX?: number }
+  ) => void;
+  getIntersection?: (x: number, width: number, height: number) => number[];
+}
+
+export const allAnimations: Animation[] = [
   line,
   circle,
   parabola,

@@ -16,5 +16,9 @@ export const line = {
       if (verticalLineX !== undefined) {
         drawVerticalLineTest(ctx, verticalLineX, height);
       }
+    },
+    getIntersection: (x: number, width: number, height: number): number[] => {
+      // For y = x, intersection is at y = height - x (canvas coordinates)
+      return [height - x];
     }
   };

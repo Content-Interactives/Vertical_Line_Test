@@ -42,3 +42,27 @@ export function drawVerticalLineTest(ctx: CanvasRenderingContext2D, x: number, h
   ctx.stroke();
   ctx.restore();
 }
+
+export function drawIntersectionDot(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  dotRadius: number = 6
+) {
+  // Draw purple highlight
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x, y, dotRadius + 3, 0, 2 * Math.PI);
+  ctx.strokeStyle = 'purple';
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.restore();
+
+  // Draw green dot
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x, y, dotRadius, 0, 2 * Math.PI);
+  ctx.fillStyle = 'green';
+  ctx.fill();
+  ctx.restore();
+}
