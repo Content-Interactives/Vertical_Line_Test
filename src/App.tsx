@@ -3,6 +3,9 @@ import './App.css';
 import GraphCanvas from './components/GraphCanvas';
 import AnimationMenu from './components/AnimationMenu';
 import { allAnimations } from './components/animations';
+import FlexiConfident from '../Ck12_Assets/Flexi_Confident.svg';
+import FlexiWorried from '../Ck12_Assets/Flexi_Worried.svg';
+import FlexiExcited from '../Ck12_Assets/Flexi_Excited.svg';
 
 function App() {
   const [showTitle, setShowTitle] = useState(false);
@@ -42,6 +45,15 @@ function App() {
     setSliderDisabled(false);
     setVerticalLineX(0); // <-- Set to 0 for the left side
   }, [selectedAnimation]);
+
+  const isAtEnd = verticalLineX === 500; // 500 is your max value
+
+  let FlexiComponent = <img src={FlexiConfident} alt="Flexi Confident" />;
+  if (sliderDisabled) {
+    FlexiComponent = <img src={FlexiWorried} alt="Flexi Worried" />;
+  } else if (isAtEnd) {
+    FlexiComponent = <img src={FlexiExcited} alt="Flexi Excited" />;
+  }
 
   return (
     <div className="App" style={{ display: 'flex', flexDirection: 'row', minHeight: '100vh' }}>
@@ -95,6 +107,9 @@ function App() {
             </div>
           )}
         </header>
+        <div style={{ margin: '20px 0' }}>
+          {FlexiComponent}
+        </div>
       </div>
     </div>
   );
