@@ -1,13 +1,17 @@
 import React from 'react';
 import { invertedSinWave } from './animations';
+import {
+  MiniLineGraph,
+  MiniCircleGraph,
+  MiniParabolaGraph,
+  MiniParabola2Graph
+} from './miniGraphics';
 
 const animations = [
-  { key:'line', label: 'Line [Put images in]' }, // KEEP
-  { key: 'circle', label: 'Circle' }, // KEEP
-  //{ key: 'sinWave', label: 'SinWave'},
-  //{ key: 'invertedSinWave', label: 'SinWave2'},
-  { key:'parabola', label: 'Parabola' }, // KEEP
-  { key: 'parabola90', label: 'Parabola2' }, // KEEP
+  { key: 'line', label: <MiniLineGraph /> },
+  { key: 'circle', label: <MiniCircleGraph /> },
+  { key: 'parabola', label: <MiniParabolaGraph /> },
+  { key: 'parabola90', label: <MiniParabola2Graph /> },
   // TODO: Create an interactive that is a whole new graph to draw.
   // TODO: Add logic on it ending the function to show it is a valid function?
   // TODO: Move buttons on the top
