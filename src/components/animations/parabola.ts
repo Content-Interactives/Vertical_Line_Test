@@ -7,10 +7,15 @@ export const parabola = {
       ctx: CanvasRenderingContext2D,
       { width, height, verticalLineX }: { width: number; height: number; verticalLineX?: number }
     ) => {
+      const padding = 40;
+      const h = width / 2;
+      const k = height - padding;
+      const a = -(height - 2 * padding) / Math.pow(h - padding, 2);
+
       ctx.beginPath();
-      for (let x = 0; x <= width; x++) {
-        const y = height - Math.pow((x - width / 2) / 40, 2) * 40;
-        if (x === 0) ctx.moveTo(x, y);
+      for (let x = padding; x <= width - padding; x++) {
+        const y = a * Math.pow(x - h, 2) + k;
+        if (x === padding) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.strokeStyle = 'green';
@@ -28,8 +33,11 @@ export const parabola = {
       width: number,
       height: number
     ): number[] => {
-      // y = height - ((x - width/2)/40)^2 * 40
-      const y = height - Math.pow((x - width / 2) / 40, 2) * 40;
+      const padding = 40;
+      const h = width / 2;
+      const k = height - padding;
+      const a = -(height - 2 * padding) / Math.pow(h - padding, 2);
+      const y = a * Math.pow(x - h, 2) + k;
       return [y];
     }
   };
