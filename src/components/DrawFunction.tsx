@@ -4,6 +4,51 @@ import { drawVerticalLineTest, drawIntersectionDot } from './animations/vertical
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
 
+function drawArrow(ctx: CanvasRenderingContext2D, fromX: number, fromY: number, toX: number, toY: number) {
+  const headLength = 12; // length of the arrow head
+  const dx = toX - fromX;
+  const dy = toY - fromY;
+  const angle = Math.atan2(dy, dx);
+
+  // Draw the main line
+  ctx.beginPath();
+  ctx.moveTo(fromX, fromY);
+  ctx.lineTo(toX, toY);
+  ctx.stroke();
+
+  // Draw the arrow head
+  ctx.beginPath();
+  ctx.moveTo(toX, toY);
+  ctx.lineTo(
+    toX - headLength * Math.cos(angle - Math.PI / 6),
+    toY - headLength * Math.sin(angle - Math.PI / 6)
+  );
+  ctx.lineTo(
+    toX - headLength * Math.cos(angle + Math.PI / 6),
+    toY - headLength * Math.sin(angle + Math.PI / 6)
+  );
+  ctx.lineTo(toX, toY);
+  ctx.lineTo(
+    toX - headLength * Math.cos(angle - Math.PI / 6),
+    toY - headLength * Math.sin(angle - Math.PI / 6)
+  );
+  ctx.stroke();
+}
+
+function drawAxes(ctx: CanvasRenderingContext2D, width: number, height: number) {
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = 2;
+  ctx.globalAlpha = 1;
+
+  // X axis (horizontal, full width)
+  drawArrow(ctx, 0, height / 2, width, height / 2); // right
+  drawArrow(ctx, width, height / 2, 0, height / 2); // left
+
+  // Y axis (vertical, full height)
+  drawArrow(ctx, width / 2, height, width / 2, 0); // up
+  drawArrow(ctx, width / 2, 0, width / 2, height); // down
+}
+
 // Function to find intersection of vertical line with line segment
 function getLineSegmentIntersection(
   x1: number, y1: number, x2: number, y2: number, 
@@ -96,6 +141,9 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange }
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    // Draw the coordinate axes first (in the background)
+    drawAxes(ctx, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     // Draw the user's curve
     if (points.length > 1) {

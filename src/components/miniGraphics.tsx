@@ -51,9 +51,22 @@ export function MiniParabola2Graph() {
 export function MiniDrawIcon() {
   return (
     <svg width="40" height="40">
-      <path d="M8,32 Q20,10 32,32" stroke="#ff9800" strokeWidth="2.5" fill="none" />
-      <circle cx="8" cy="32" r="2" fill="#ff9800" />
-      <circle cx="32" cy="32" r="2" fill="#ff9800" />
+      {/* Hand-drawn style curve with chaos/irregularity */}
+      <path 
+        d="M5,30 Q8,22 12,15 Q14,12 16,18 Q20,28 22,24 Q25,19 28,20 Q29,21 30,19 Q31,18 32,18" 
+        stroke="#ff9800" 
+        strokeWidth="2" 
+        fill="none" 
+        strokeLinecap="round"
+      />
+      {/* Tilted pencil positioned higher on the curve */}
+      <g transform="translate(32, 18) rotate(45)">
+        <rect x="-1" y="-6" width="2" height="8" fill="#8B4513" />
+        <polygon points="-1,-6 1,-6 0,-9" fill="#FFD700" />
+        <circle cx="0" cy="2" r="1" fill="#FF6B6B" />
+      </g>
+      {/* Small dots showing the pencil tip is touching the curve */}
+      <circle cx="32" cy="18" r="0.5" fill="#333" opacity="0.5" />
       <rect x="0" y="0" width="40" height="40" fill="none" stroke="#ccc" />
     </svg>
   );
