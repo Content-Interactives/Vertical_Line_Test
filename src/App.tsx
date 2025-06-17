@@ -165,6 +165,7 @@ function App() {
                 height={500}
                 selectedAnimation={selectedAnimation}
                 verticalLineX={verticalLineX}
+                verticalLineTestActive={true}
               />
             )}
           </div>

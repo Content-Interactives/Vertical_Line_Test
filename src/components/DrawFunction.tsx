@@ -180,7 +180,11 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange }
         ref={canvasRef}
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
-        style={{ border: '1px solid #ccc', background: 'white' }}
+        style={{ 
+          border: '1px solid #ccc', 
+          background: 'white',
+          cursor: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'%3e%3cg transform=\'rotate(45 12 12)\'%3e%3crect x=\'11\' y=\'4\' width=\'2\' height=\'12\' fill=\'%238B4513\'/%3e%3cpolygon points=\'11,4 13,4 12,1\' fill=\'%23FFD700\'/%3e%3ccircle cx=\'12\' cy=\'16\' r=\'1.5\' fill=\'%23FF6B6B\'/%3e%3c/g%3e%3c/svg%3e") 12 12, crosshair'
+        }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
