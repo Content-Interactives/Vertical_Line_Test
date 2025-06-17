@@ -49,7 +49,7 @@ function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, slider
         max={500}
         value={verticalLineX}
         onChange={handleSliderChange}
-        style={{ width: '100%' }}
+        style={{ width: '100%', cursor: 'pointer' }}
         disabled={sliderDisabled}
       />
       <div style={{ width: 500, display: 'flex', alignItems: 'flex-end', marginTop: 16 }}>
