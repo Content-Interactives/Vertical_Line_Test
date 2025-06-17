@@ -1,13 +1,70 @@
 import React, { useRef, useState } from 'react';
+import { drawVerticalLineTest, drawIntersectionDot } from './animations/verticalLineTest';
 
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
 
-interface DrawFunctionProps {
-  verticalLineX?: number;
+// Function to find intersection of vertical line with line segment
+function getLineSegmentIntersection(
+  x1: number, y1: number, x2: number, y2: number, 
+  verticalLineX: number
+): number | null {
+  // If both points are on the same side of the vertical line, no intersection
+  if ((x1 < verticalLineX && x2 < verticalLineX) || (x1 > verticalLineX && x2 > verticalLineX)) {
+    return null;
+  }
+  
+  // If the line segment is vertical and matches our vertical line
+  if (x1 === x2 && x1 === verticalLineX) {
+    return y1; // Return one of the y values
+  }
+  
+  // If the line segment is vertical but doesn't match our vertical line
+  if (x1 === x2) {
+    return null;
+  }
+  
+  // Calculate intersection using linear interpolation
+  const t = (verticalLineX - x1) / (x2 - x1);
+  if (t >= 0 && t <= 1) {
+    return y1 + t * (y2 - y1);
+  }
+  
+  return null;
 }
 
-export default function DrawFunction({ verticalLineX = 0 }: DrawFunctionProps) {
+// Function to get all intersections of the drawn curve with vertical line
+function getDrawnCurveIntersections(points: {x: number, y: number}[], verticalLineX: number): number[] {
+  const intersections: number[] = [];
+  
+  for (let i = 0; i < points.length - 1; i++) {
+    const p1 = points[i];
+    const p2 = points[i + 1];
+    
+    const intersectionY = getLineSegmentIntersection(p1.x, p1.y, p2.x, p2.y, verticalLineX);
+    if (intersectionY !== null) {
+      intersections.push(intersectionY);
+    }
+  }
+  
+  // Remove duplicate intersections that are very close to each other
+  const filteredIntersections: number[] = [];
+  intersections.forEach(y => {
+    const isDuplicate = filteredIntersections.some(existingY => Math.abs(existingY - y) < 3);
+    if (!isDuplicate) {
+      filteredIntersections.push(y);
+    }
+  });
+  
+  return filteredIntersections;
+}
+
+interface DrawFunctionProps {
+  verticalLineX?: number;
+  onIntersectionChange?: (intersectionCount: number) => void;
+}
+
+export default function DrawFunction({ verticalLineX = 0, onIntersectionChange }: DrawFunctionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
@@ -52,31 +109,22 @@ export default function DrawFunction({ verticalLineX = 0 }: DrawFunctionProps) {
       ctx.stroke();
     }
 
-    // Draw the vertical line
-    ctx.save();
-    ctx.strokeStyle = 'red';
-    ctx.setLineDash([8, 6]);
-    ctx.beginPath();
-    ctx.moveTo(verticalLineX, 0);
-    ctx.lineTo(verticalLineX, CANVAS_HEIGHT);
-    ctx.stroke();
-    ctx.restore();
+    // Draw the vertical line using the standard function
+    drawVerticalLineTest(ctx, verticalLineX, CANVAS_HEIGHT);
 
-    // Draw intersection dot(s)
-    const delta = 2;
-    const intersectingPoints = points.filter(
-      pt => Math.abs(pt.x - verticalLineX) < delta
-    );
-    intersectingPoints.forEach(pt => {
-      ctx.beginPath();
-      ctx.arc(pt.x, pt.y, 6, 0, 2 * Math.PI);
-      ctx.fillStyle = 'lime';
-      ctx.strokeStyle = 'purple';
-      ctx.lineWidth = 3;
-      ctx.fill();
-      ctx.stroke();
-    });
-  }, [points, verticalLineX]);
+    // Calculate and draw intersection dots using proper line segment intersection
+    if (points.length > 1) {
+      const intersectionYs = getDrawnCurveIntersections(points, verticalLineX);
+      intersectionYs.forEach(y => {
+        drawIntersectionDot(ctx, verticalLineX, y);
+      });
+      
+      // Notify parent component about intersection count
+      if (onIntersectionChange) {
+        onIntersectionChange(intersectionYs.length);
+      }
+    }
+  }, [points, verticalLineX, onIntersectionChange]);
 
   return (
     <div>

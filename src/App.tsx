@@ -106,12 +106,21 @@ function App() {
     const newX = Number(e.target.value);
     setVerticalLineX(newX);
 
+    // For draw mode, the intersection logic is handled by the DrawFunction component
+    if (selectedAnimation === 'draw') {
+      return;
+    }
+
     // Find the selected animation
     const selectedAnim = allAnimations.find(anim => anim.key === selectedAnimation);
     if (selectedAnim && selectedAnim.getIntersection) {
       const ys = selectedAnim.getIntersection(newX, 500, 500); // use your width/height
       setSliderDisabled(ys.length >= 2);
     }
+  };
+
+  const handleDrawIntersectionChange = (intersectionCount: number) => {
+    setSliderDisabled(intersectionCount >= 2);
   };
 
   useEffect(() => {
@@ -146,7 +155,10 @@ function App() {
           }}>
             <GraphTitle />
             {selectedAnimation === 'draw' ? (
-              <DrawFunction verticalLineX={verticalLineX} />
+              <DrawFunction 
+                verticalLineX={verticalLineX} 
+                onIntersectionChange={handleDrawIntersectionChange}
+              />
             ) : (
               <GraphCanvas
                 width={500}
