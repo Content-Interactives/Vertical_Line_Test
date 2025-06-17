@@ -146,7 +146,7 @@ function App() {
           }}>
             <GraphTitle />
             {selectedAnimation === 'draw' ? (
-              <DrawFunction />
+              <DrawFunction verticalLineX={verticalLineX} />
             ) : (
               <GraphCanvas
                 width={500}

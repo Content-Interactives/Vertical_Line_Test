@@ -3,11 +3,14 @@ import React, { useRef, useState } from 'react';
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
 
-export default function DrawFunction() {
+interface DrawFunctionProps {
+  verticalLineX?: number;
+}
+
+export default function DrawFunction({ verticalLineX = 0 }: DrawFunctionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
-  const [verticalLineX, setVerticalLineX] = useState(0);
 
   // Start drawing
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -86,14 +89,6 @@ export default function DrawFunction() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-      />
-      <input
-        type="range"
-        min={0}
-        max={CANVAS_WIDTH}
-        value={verticalLineX}
-        onChange={e => setVerticalLineX(Number(e.target.value))}
-        style={{ width: CANVAS_WIDTH, marginTop: 16 }}
       />
     </div>
   );
