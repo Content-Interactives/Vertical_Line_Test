@@ -4,7 +4,8 @@ import {
   MiniLineGraph,
   MiniCircleGraph,
   MiniParabolaGraph,
-  MiniParabola2Graph
+  MiniParabola2Graph,
+  MiniDrawIcon
 } from './miniGraphics';
 
 const animations = [
@@ -12,6 +13,7 @@ const animations = [
   { key: 'circle', label: <MiniCircleGraph /> },
   { key: 'parabola', label: <MiniParabolaGraph /> },
   { key: 'parabola90', label: <MiniParabola2Graph /> },
+  { key: 'draw', label: <MiniDrawIcon /> },
   // TODO: Create an interactive that is a whole new graph to draw.
   // TODO: Add logic on it ending the function to show it is a valid function?
   // TODO: Move buttons on the top

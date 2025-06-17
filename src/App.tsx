@@ -6,6 +6,7 @@ import { allAnimations } from './components/animations';
 import FlexiConfident from '../Ck12_Assets/Flexi_Confident.svg';
 import FlexiWorried from '../Ck12_Assets/Flexi_Worried.svg';
 import FlexiExcited from '../Ck12_Assets/Flexi_Excited.svg';
+import DrawFunction from './components/DrawFunction';
 
 function getFlexiImage({
   sliderDisabled,
@@ -144,12 +145,16 @@ function App() {
             position: 'relative'
           }}>
             <GraphTitle />
-            <GraphCanvas
-              width={500}
-              height={500}
-              selectedAnimation={selectedAnimation}
-              verticalLineX={verticalLineX}
-            />
+            {selectedAnimation === 'draw' ? (
+              <DrawFunction />
+            ) : (
+              <GraphCanvas
+                width={500}
+                height={500}
+                selectedAnimation={selectedAnimation}
+                verticalLineX={verticalLineX}
+              />
+            )}
           </div>
           <FlexiSliderColumn
             flexiImg={flexiImg}

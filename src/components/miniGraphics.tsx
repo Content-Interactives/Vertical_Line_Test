@@ -47,3 +47,15 @@ export function MiniParabola2Graph() {
     </svg>
   );
 }
+
+export function MiniDrawIcon() {
+  return (
+    <svg width="40" height="40">
+      <path d="M8,32 Q20,10 32,32" stroke="#ff9800" strokeWidth="2.5" fill="none" />
+      <circle cx="8" cy="32" r="2" fill="#ff9800" />
+      <circle cx="32" cy="32" r="2" fill="#ff9800" />
+      <rect x="0" y="0" width="40" height="40" fill="none" stroke="#ccc" />
+    </svg>
+  );
+}
+  
