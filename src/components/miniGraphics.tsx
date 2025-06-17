@@ -59,11 +59,20 @@ export function MiniDrawIcon() {
         fill="none" 
         strokeLinecap="round"
       />
-      {/* Tilted pencil positioned higher on the curve */}
+      {/* Realistic pencil positioned at the end of the curve */}
       <g transform="translate(32, 18) rotate(45)">
-        <rect x="-1" y="-6" width="2" height="8" fill="#8B4513" />
-        <polygon points="-1,-6 1,-6 0,-9" fill="#FFD700" />
-        <circle cx="0" cy="2" r="1" fill="#FF6B6B" />
+        {/* Pencil body (wood) */}
+        <rect x="-1" y="-8" width="2" height="10" fill="#DEB887" stroke="#CD853F" strokeWidth="0.2" />
+        {/* Metal ferrule */}
+        <rect x="-1.2" y="-9.5" width="2.4" height="1.5" fill="#C0C0C0" stroke="#A0A0A0" strokeWidth="0.2" />
+        {/* Eraser */}
+        <rect x="-1" y="-10.5" width="2" height="1" fill="#FF69B4" stroke="#FF1493" strokeWidth="0.2" rx="0.5" />
+        {/* Pencil tip (wood) */}
+        <polygon points="-1,2 1,2 0,4" fill="#DEB887" stroke="#CD853F" strokeWidth="0.2" />
+        {/* Graphite tip */}
+        <polygon points="-0.5,4 0.5,4 0,5.5" fill="#2F2F2F" />
+        {/* Brand text area */}
+        <rect x="-0.8" y="-4" width="1.6" height="4" fill="#F5DEB3" opacity="0.7" />
       </g>
       {/* Small dots showing the pencil tip is touching the curve */}
       <circle cx="32" cy="18" r="0.5" fill="#333" opacity="0.5" />

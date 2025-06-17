@@ -4,6 +4,7 @@ import { drawVerticalLineTest, drawIntersectionDot } from './animations/vertical
 const CANVAS_WIDTH = 500;
 const CANVAS_HEIGHT = 500;
 
+//TODO: Add a button, to do the animation
 function drawArrow(ctx: CanvasRenderingContext2D, fromX: number, fromY: number, toX: number, toY: number) {
   const headLength = 12; // length of the arrow head
   const dx = toX - fromX;
@@ -107,9 +108,10 @@ function getDrawnCurveIntersections(points: {x: number, y: number}[], verticalLi
 interface DrawFunctionProps {
   verticalLineX?: number;
   onIntersectionChange?: (intersectionCount: number) => void;
+  onDrawingStateChange?: (hasDrawing: boolean, isActivelyDrawing: boolean) => void;
 }
 
-export default function DrawFunction({ verticalLineX = 0, onIntersectionChange }: DrawFunctionProps) {
+export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, onDrawingStateChange }: DrawFunctionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
@@ -119,6 +121,10 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange }
     setDrawing(true);
     const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
     setPoints([{ x: e.clientX - rect.left, y: e.clientY - rect.top }]);
+    // Notify parent that user is actively drawing
+    if (onDrawingStateChange) {
+      onDrawingStateChange(true, true);
+    }
   };
 
   // Draw as mouse moves
@@ -132,7 +138,24 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange }
   };
 
   // Stop drawing
-  const handleMouseUp = () => setDrawing(false);
+  const handleMouseUp = () => {
+    setDrawing(false);
+    // Notify parent when drawing stops and we have points - user has finished drawing
+    if (points.length > 0 && onDrawingStateChange) {
+      onDrawingStateChange(true, false); // hasDrawing: true, isActivelyDrawing: false
+    }
+  };
+
+  // Clear the drawing
+  const handleClear = () => {
+    setPoints([]);
+    // Notify parent component that drawing is cleared
+    if (onDrawingStateChange) {
+      onDrawingStateChange(false, false); // hasDrawing: false, isActivelyDrawing: false
+    }
+  };
+
+  // Removed the immediate useEffect notification - now we only notify on specific events
 
   // Draw the curve and vertical line
   React.useEffect(() => {
@@ -175,7 +198,7 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange }
   }, [points, verticalLineX, onIntersectionChange]);
 
   return (
-    <div>
+    <div style={{ position: 'relative', display: 'inline-block' }}>
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}
@@ -183,13 +206,39 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange }
         style={{ 
           border: '1px solid #ccc', 
           background: 'white',
-          cursor: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\'%3e%3cg transform=\'rotate(45 12 12)\'%3e%3crect x=\'11\' y=\'4\' width=\'2\' height=\'12\' fill=\'%238B4513\'/%3e%3cpolygon points=\'11,4 13,4 12,1\' fill=\'%23FFD700\'/%3e%3ccircle cx=\'12\' cy=\'16\' r=\'1.5\' fill=\'%23FF6B6B\'/%3e%3c/g%3e%3c/svg%3e") 12 12, crosshair'
+          cursor: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 48 48\'%3e%3cg transform=\'rotate(45 24 24)\'%3e%3c!-- Pencil body (wood) --%3e%3crect x=\'22\' y=\'8\' width=\'4\' height=\'20\' fill=\'%23DEB887\' stroke=\'%23CD853F\' stroke-width=\'0.5\'/%3e%3c!-- Metal ferrule --%3e%3crect x=\'21.5\' y=\'6\' width=\'5\' height=\'3\' fill=\'%23C0C0C0\' stroke=\'%23A0A0A0\' stroke-width=\'0.5\'/%3e%3c!-- Eraser --%3e%3crect x=\'22\' y=\'4\' width=\'4\' height=\'2\' fill=\'%23FF69B4\' stroke=\'%23FF1493\' stroke-width=\'0.5\' rx=\'1\'/%3e%3c!-- Pencil tip (wood) --%3e%3cpolygon points=\'22,28 26,28 24,32\' fill=\'%23DEB887\' stroke=\'%23CD853F\' stroke-width=\'0.5\'/%3e%3c!-- Graphite tip --%3e%3cpolygon points=\'23,32 25,32 24,35\' fill=\'%232F2F2F\'/%3e%3c!-- Brand text area --%3e%3crect x=\'22.5\' y=\'12\' width=\'3\' height=\'8\' fill=\'%23F5DEB3\' opacity=\'0.7\'/%3e%3c/g%3e%3c/svg%3e") 24 24, crosshair'
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       />
+      {points.length > 0 && (
+        <button
+          onClick={handleClear}
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            background: '#ff4444',
+            border: 'none',
+            borderRadius: '4px',
+            padding: '8px',
+            cursor: 'pointer',
+            color: 'white',
+            fontSize: '16px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '36px',
+            height: '36px'
+          }}
+          title="Clear drawing"
+        >
+          🗑️
+        </button>
+      )}
     </div>
   );
 }

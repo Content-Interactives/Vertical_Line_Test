@@ -31,14 +31,30 @@ type FlexiSliderRowProps = {
   verticalLineX: number;
   handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   sliderDisabled: boolean;
+  isDrawMode: boolean;
+  hasDrawing: boolean;
+  isActivelyDrawing: boolean;
 };
 
-function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, sliderDisabled }: FlexiSliderRowProps) {
-  let speechText = "checking";
-  if (sliderDisabled) {
-    speechText = "Fail";
-  } else if (verticalLineX === 500) {
-    speechText = "Pass";
+function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, sliderDisabled, isDrawMode, hasDrawing, isActivelyDrawing }: FlexiSliderRowProps) {
+  let speechText = "Checking..";
+  
+  if (isDrawMode) {
+    if (!hasDrawing || isActivelyDrawing) {
+      speechText = "Draw your graph!";
+    } else if (sliderDisabled) {
+      speechText = "Fail!";
+    } else if (verticalLineX === 500) {
+      speechText = "Pass!";
+    } else {
+      speechText = "Checking...";
+    }
+  } else {
+    if (sliderDisabled) {
+      speechText = "Fail!";
+    } else if (verticalLineX === 500) {
+      speechText = "Pass!";
+    }
   }
 
   return (
@@ -86,6 +102,8 @@ function App() {
   const [selectedAnimation, setSelectedAnimation] = useState('line');
   const [verticalLineX, setVerticalLineX] = useState(250); // default to center
   const [sliderDisabled, setSliderDisabled] = useState(false);
+  const [hasDrawing, setHasDrawing] = useState(false);
+  const [isActivelyDrawing, setIsActivelyDrawing] = useState(false);
 
   const handleAnimationComplete = () => {
     setShowTitle(true);
@@ -123,9 +141,16 @@ function App() {
     setSliderDisabled(intersectionCount >= 2);
   };
 
+  const handleDrawingStateChange = (hasDrawingState: boolean, isActivelyDrawingState: boolean) => {
+    setHasDrawing(hasDrawingState);
+    setIsActivelyDrawing(isActivelyDrawingState);
+  };
+
   useEffect(() => {
     setSliderDisabled(false);
     setVerticalLineX(0); // <-- Set to 0 for the left side
+    setHasDrawing(false); // Reset drawing state when changing animations
+    setIsActivelyDrawing(false); // Reset actively drawing state
   }, [selectedAnimation]);
 
   const isAtEnd = verticalLineX === 500;
@@ -158,6 +183,7 @@ function App() {
               <DrawFunction 
                 verticalLineX={verticalLineX} 
                 onIntersectionChange={handleDrawIntersectionChange}
+                onDrawingStateChange={handleDrawingStateChange}
               />
             ) : (
               <GraphCanvas
@@ -174,6 +200,9 @@ function App() {
             verticalLineX={verticalLineX}
             handleSliderChange={handleSliderChange}
             sliderDisabled={sliderDisabled}
+            isDrawMode={selectedAnimation === 'draw'}
+            hasDrawing={hasDrawing}
+            isActivelyDrawing={isActivelyDrawing}
           />
           {sliderDisabled && (
             <div style={{ color: 'red', marginTop: 8 }}>
