@@ -20,6 +20,6 @@
     "build": "vite build",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist && echo 'Live at: https://MaxMeyberg.github.io/Vertical_Line_Test/'"
+    "deploy": "gh-pages -d dist && echo 'Live at: https://content-interactives.github.io/Vertical_Line_Test/'"
   }
 }
