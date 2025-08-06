@@ -2,6 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import { allAnimations } from './animations';
 import { drawVerticalLineTest, drawIntersectionDot } from './animations/verticalLineTest';
 
+// Constants
+const SLIDER_RANGE = 500; // Slider goes from 0 to 500
+
 interface GraphCanvasProps {
   width?: number;
   height?: number;
@@ -68,8 +71,8 @@ function drawGraph(
   drawAxes(ctx, width, height);
   const selectedAnim = allAnimations.find(anim => anim.key === selectedAnimation);
   if (selectedAnim) {
-    // Scale verticalLineX from slider range (0-500) to actual canvas width
-    const scaledX = verticalLineX !== undefined ? (verticalLineX / 500) * width : undefined;
+    // Scale verticalLineX from slider range (0-SLIDER_RANGE) to actual canvas width
+    const scaledX = verticalLineX !== undefined ? (verticalLineX / SLIDER_RANGE) * width : undefined;
     
     selectedAnim.draw(ctx, {
       width,

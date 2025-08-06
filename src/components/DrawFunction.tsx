@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { drawVerticalLineTest, drawIntersectionDot } from './animations/verticalLineTest';
 
-// Dynamic canvas size based on viewport
+// Constants
+const SLIDER_RANGE = 500; // Slider goes from 0 to 500
+// Dynamic canvas size based on viewport  
 const getCanvasSize = () => Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6);
 const CANVAS_WIDTH = getCanvasSize();
 const CANVAS_HEIGHT = getCanvasSize();
@@ -120,11 +122,36 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
   const [drawing, setDrawing] = useState(false);
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
 
-  // Start drawing
+  // Helper to get coordinates from touch or mouse event
+  const getEventCoordinates = (e: React.MouseEvent | React.TouchEvent, target: HTMLCanvasElement) => {
+    const rect = target.getBoundingClientRect();
+    if ('touches' in e) {
+      // Touch event
+      const touch = e.touches[0] || e.changedTouches[0];
+      return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+    } else {
+      // Mouse event
+      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    }
+  };
+
+  // Start drawing (mouse)
   const handleMouseDown = (e: React.MouseEvent) => {
     setDrawing(true);
-    const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-    setPoints([{ x: e.clientX - rect.left, y: e.clientY - rect.top }]);
+    const coords = getEventCoordinates(e, e.target as HTMLCanvasElement);
+    setPoints([coords]);
+    // Notify parent that user is actively drawing
+    if (onDrawingStateChange) {
+      onDrawingStateChange(true, true);
+    }
+  };
+
+  // Start drawing (touch)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault(); // Prevent scrolling
+    setDrawing(true);
+    const coords = getEventCoordinates(e, e.target as HTMLCanvasElement);
+    setPoints([coords]);
     // Notify parent that user is actively drawing
     if (onDrawingStateChange) {
       onDrawingStateChange(true, true);
@@ -134,15 +161,30 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
   // Draw as mouse moves
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!drawing) return;
-    const rect = (e.target as HTMLCanvasElement).getBoundingClientRect();
-    setPoints((prev) => [
-      ...prev,
-      { x: e.clientX - rect.left, y: e.clientY - rect.top },
-    ]);
+    const coords = getEventCoordinates(e, e.target as HTMLCanvasElement);
+    setPoints((prev) => [...prev, coords]);
   };
 
-  // Stop drawing
+  // Draw as touch moves
+  const handleTouchMove = (e: React.TouchEvent) => {
+    e.preventDefault(); // Prevent scrolling
+    if (!drawing) return;
+    const coords = getEventCoordinates(e, e.target as HTMLCanvasElement);
+    setPoints((prev) => [...prev, coords]);
+  };
+
+  // Stop drawing (mouse)
   const handleMouseUp = () => {
+    setDrawing(false);
+    // Notify parent when drawing stops and we have points - user has finished drawing
+    if (points.length > 0 && onDrawingStateChange) {
+      onDrawingStateChange(true, false); // hasDrawing: true, isActivelyDrawing: false
+    }
+  };
+
+  // Stop drawing (touch)
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault(); // Prevent scrolling
     setDrawing(false);
     // Notify parent when drawing stops and we have points - user has finished drawing
     if (points.length > 0 && onDrawingStateChange) {
@@ -184,8 +226,8 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
       ctx.stroke();
     }
 
-    // verticalLineX comes from slider (0-500 range), scale to actual canvas width
-    const scaledX = (verticalLineX / 500) * width;
+    // verticalLineX comes from slider (0-SLIDER_RANGE), scale to actual canvas width
+    const scaledX = (verticalLineX / SLIDER_RANGE) * width;
     
     // Draw the vertical line using the standard function
     drawVerticalLineTest(ctx, scaledX, height);
@@ -219,6 +261,9 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       />
       {points.length > 0 && (
         <button
