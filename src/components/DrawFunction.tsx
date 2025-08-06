@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { drawVerticalLineTest, drawIntersectionDot } from './animations/verticalLineTest';
 
-const CANVAS_WIDTH = 500;
-const CANVAS_HEIGHT = 500;
+// Dynamic canvas size based on viewport
+const getCanvasSize = () => Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6);
+const CANVAS_WIDTH = getCanvasSize();
+const CANVAS_HEIGHT = getCanvasSize();
 
 //TODO: Add a button, to do the animation
 function drawArrow(ctx: CanvasRenderingContext2D, fromX: number, fromY: number, toX: number, toY: number) {
@@ -109,9 +111,11 @@ interface DrawFunctionProps {
   verticalLineX?: number;
   onIntersectionChange?: (intersectionCount: number) => void;
   onDrawingStateChange?: (hasDrawing: boolean, isActivelyDrawing: boolean) => void;
+  width?: number;
+  height?: number;
 }
 
-export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, onDrawingStateChange }: DrawFunctionProps) {
+export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, onDrawingStateChange, width = CANVAS_WIDTH, height = CANVAS_HEIGHT }: DrawFunctionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
@@ -163,10 +167,10 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.clearRect(0, 0, width, height);
 
     // Draw the coordinate axes first (in the background)
-    drawAxes(ctx, CANVAS_WIDTH, CANVAS_HEIGHT);
+    drawAxes(ctx, width, height);
 
     // Draw the user's curve
     if (points.length > 1) {
@@ -180,14 +184,17 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
       ctx.stroke();
     }
 
+    // verticalLineX comes from slider (0-500 range), scale to actual canvas width
+    const scaledX = (verticalLineX / 500) * width;
+    
     // Draw the vertical line using the standard function
-    drawVerticalLineTest(ctx, verticalLineX, CANVAS_HEIGHT);
+    drawVerticalLineTest(ctx, scaledX, height);
 
     // Calculate and draw intersection dots using proper line segment intersection
     if (points.length > 1) {
-      const intersectionYs = getDrawnCurveIntersections(points, verticalLineX);
+      const intersectionYs = getDrawnCurveIntersections(points, scaledX);
       intersectionYs.forEach(y => {
-        drawIntersectionDot(ctx, verticalLineX, y);
+        drawIntersectionDot(ctx, scaledX, y);
       });
       
       // Notify parent component about intersection count
@@ -195,14 +202,14 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
         onIntersectionChange(intersectionYs.length);
       }
     }
-  }, [points, verticalLineX, onIntersectionChange]);
+  }, [points, verticalLineX, onIntersectionChange, width, height]);
 
   return (
     <div style={{ position: 'relative', display: 'inline-block' }}>
       <canvas
         ref={canvasRef}
-        width={CANVAS_WIDTH}
-        height={CANVAS_HEIGHT}
+        width={width}
+        height={height}
         style={{ 
           border: '0.1vw solid #ccc', 
           background: 'white',

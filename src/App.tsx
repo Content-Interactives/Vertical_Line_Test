@@ -184,6 +184,8 @@ function App() {
                 verticalLineX={verticalLineX} 
                 onIntersectionChange={handleDrawIntersectionChange}
                 onDrawingStateChange={handleDrawingStateChange}
+                width={Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6)}
+                height={Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6)}
               />
             ) : (
               <GraphCanvas
