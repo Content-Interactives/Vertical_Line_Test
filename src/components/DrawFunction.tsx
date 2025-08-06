@@ -123,8 +123,11 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
 
   // Helper to get coordinates from touch or mouse event
-  const getEventCoordinates = (e: React.MouseEvent | React.TouchEvent, target: HTMLCanvasElement) => {
-    const rect = target.getBoundingClientRect();
+  const getEventCoordinates = (e: React.MouseEvent | React.TouchEvent | TouchEvent | MouseEvent, target?: HTMLCanvasElement) => {
+    const canvas = target || canvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    
+    const rect = canvas.getBoundingClientRect();
     if ('touches' in e) {
       // Touch event
       const touch = e.touches[0] || e.changedTouches[0];
