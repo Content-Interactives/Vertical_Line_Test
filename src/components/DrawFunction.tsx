@@ -204,7 +204,7 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
         width={CANVAS_WIDTH}
         height={CANVAS_HEIGHT}
         style={{ 
-          border: '1px solid #ccc', 
+          border: '0.1vw solid #ccc', 
           background: 'white',
           cursor: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 48 48\'%3e%3cg transform=\'rotate(45 24 24)\'%3e%3c!-- Pencil body (wood) --%3e%3crect x=\'22\' y=\'8\' width=\'4\' height=\'20\' fill=\'%23DEB887\' stroke=\'%23CD853F\' stroke-width=\'0.5\'/%3e%3c!-- Metal ferrule --%3e%3crect x=\'21.5\' y=\'6\' width=\'5\' height=\'3\' fill=\'%23C0C0C0\' stroke=\'%23A0A0A0\' stroke-width=\'0.5\'/%3e%3c!-- Eraser --%3e%3crect x=\'22\' y=\'4\' width=\'4\' height=\'2\' fill=\'%23FF69B4\' stroke=\'%23FF1493\' stroke-width=\'0.5\' rx=\'1\'/%3e%3c!-- Pencil tip (wood) --%3e%3cpolygon points=\'22,28 26,28 24,32\' fill=\'%23DEB887\' stroke=\'%23CD853F\' stroke-width=\'0.5\'/%3e%3c!-- Graphite tip --%3e%3cpolygon points=\'23,32 25,32 24,35\' fill=\'%232F2F2F\'/%3e%3c!-- Brand text area --%3e%3crect x=\'22.5\' y=\'12\' width=\'3\' height=\'8\' fill=\'%23F5DEB3\' opacity=\'0.7\'/%3e%3c/g%3e%3c/svg%3e") 24 24, crosshair'
         }}
@@ -218,21 +218,21 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
           onClick={handleClear}
           style={{
             position: 'absolute',
-            top: '10px',
-            right: '10px',
+                      top: '1vh',
+          right: '1vw',
             background: '#ff4444',
             border: 'none',
-            borderRadius: '4px',
-            padding: '8px',
+                      borderRadius: '0.5vw',
+          padding: '1vw',
             cursor: 'pointer',
             color: 'white',
-            fontSize: '16px',
+            fontSize: '2vw',
             boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            width: '36px',
-            height: '36px'
+                      width: '4.5vw',
+          height: '4.5vw'
           }}
           title="Clear drawing"
         >

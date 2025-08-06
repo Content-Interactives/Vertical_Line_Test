@@ -21,7 +21,7 @@ function GraphTitle() {
       top: -50,
       left: '50%',
       transform: 'translateX(-50%)',
-      fontSize: 28,
+      fontSize: '3.5vw',
       fontWeight: 600,
       color: '#2e7d32',
       zIndex: 10,

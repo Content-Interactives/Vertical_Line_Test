@@ -2,7 +2,7 @@ import React from 'react';
 
 export function MiniLineGraph() {
   return (
-    <svg width="40" height="40">
+    <svg width="5vw" height="5vw" viewBox="0 0 40 40">
       <line x1="5" y1="35" x2="35" y2="5" stroke="blue" strokeWidth="2" />
       <rect x="0" y="0" width="40" height="40" fill="none" stroke="#ccc" />
     </svg>
@@ -11,7 +11,7 @@ export function MiniLineGraph() {
 
 export function MiniCircleGraph() {
   return (
-    <svg width="40" height="40">
+    <svg width="5vw" height="5vw" viewBox="0 0 40 40">
       <circle cx="20" cy="20" r="15" stroke="red" strokeWidth="2" fill="none" />
       <rect x="0" y="0" width="40" height="40" fill="none" stroke="#ccc" />
     </svg>
@@ -21,7 +21,7 @@ export function MiniCircleGraph() {
 export function MiniParabolaGraph() {
   // Downward-opening parabola (hill shape)
   return (
-    <svg width="40" height="40">
+    <svg width="5vw" height="5vw" viewBox="0 0 40 40">
       <path
         d="M10,10 Q20,60 30,10"
         stroke="green"
@@ -36,7 +36,7 @@ export function MiniParabolaGraph() {
 export function MiniParabola2Graph() {
   // Rightward-opening parabola (x = a(y-k)^2 + h)
   return (
-    <svg width="40" height="40">
+    <svg width="5vw" height="5vw" viewBox="0 0 40 40">
       <path 
         d="M40,15 Q0,20 40,25"
         stroke="purple" 
@@ -50,7 +50,7 @@ export function MiniParabola2Graph() {
 
 export function MiniDrawIcon() {
   return (
-    <svg width="40" height="40">
+    <svg width="5vw" height="5vw" viewBox="0 0 40 40">
       {/* Hand-drawn style curve with chaos/irregularity */}
       <path 
         d="M5,30 Q8,22 12,15 Q14,12 16,18 Q20,28 22,24 Q25,19 28,20 Q29,21 30,19 Q31,18 32,18" 

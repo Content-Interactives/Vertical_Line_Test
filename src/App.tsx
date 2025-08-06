@@ -58,7 +58,7 @@ function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, slider
   }
 
   return (
-    <div style={{ width: 500, display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '20px 0' }}>
+          <div style={{ width: '60vw', display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '2vh 0' }}>
       <input
         type="range"
         min={0}
@@ -68,9 +68,9 @@ function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, slider
         style={{ width: '100%', cursor: 'pointer' }}
         disabled={sliderDisabled}
       />
-      <div style={{ width: 500, display: 'flex', alignItems: 'flex-end', marginTop: 16 }}>
-        <img src={flexiImg} alt="Flexi" style={{ width: 80, height: 80 }} />
-        <div className="speech-bubble" style={{ marginLeft: 16, marginBottom: 8 }}>
+      <div style={{ width: '60vw', display: 'flex', alignItems: 'flex-end', marginTop: '2vh' }}>
+        <img src={flexiImg} alt="Flexi" style={{ width: '10vw', height: '10vw' }} />
+        <div className="speech-bubble" style={{ marginLeft: '2vw', marginBottom: '1vh' }}>
           {speechText}
         </div>
       </div>
@@ -85,7 +85,7 @@ function GraphTitle() {
       top: -50,
       left: '50%',
       transform: 'translateX(-50%)',
-      fontSize: 28,
+              fontSize: '3.5vw',
       fontWeight: 600,
       color: '#2e7d32',
       zIndex: 10,
@@ -175,7 +175,7 @@ function App() {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            height: 500,
+            height: '60vh',
             position: 'relative'
           }}>
             <GraphTitle />
@@ -187,8 +187,8 @@ function App() {
               />
             ) : (
               <GraphCanvas
-                width={500}
-                height={500}
+                width={Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6)}
+                height={Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6)}
                 selectedAnimation={selectedAnimation}
                 verticalLineX={verticalLineX}
                 verticalLineTestActive={true}
@@ -205,7 +205,7 @@ function App() {
             isActivelyDrawing={isActivelyDrawing}
           />
           {sliderDisabled && (
-            <div style={{ color: 'red', marginTop: 8 }}>
+            <div style={{ color: 'red', marginTop: '1vh' }}>
               Vertical line test failed: more than one intersection!
             </div>
           )}

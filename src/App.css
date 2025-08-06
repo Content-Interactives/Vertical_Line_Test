@@ -24,12 +24,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 2vw;
 }
 
 h1 {
   color: #333;
-  margin-bottom: 20px;
+  margin-bottom: 2vh;
 }
 
 .App-link {
@@ -46,10 +46,10 @@ h1 {
 }
 
 .title-container {
-  height: 40px; /* Fixed height to prevent layout shift */
-  margin-bottom: 20px;
+  height: 5vh; /* Fixed height to prevent layout shift */
+  margin-bottom: 2vh;
   position: relative;
-  width: 500px; /* Match the canvas width */
+  width: 60vw; /* Match the canvas width */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -57,7 +57,7 @@ h1 {
 
 .function-title {
   color: #4CAF50;
-  font-size: 28px;
+  font-size: 3.5vw;
   font-weight: bold;
   text-align: center;
   animation: simpleFadeIn 1.5s ease-in-out;
@@ -81,36 +81,36 @@ h1 {
 .speech-bubble {
   position: relative;
   background: #fff;
-  border-radius: 16px;
-  padding: 14px 24px;
+  border-radius: 2vw;
+  padding: 1.5vw 3vw;
   color: #1976d2;
-  border: 2px solid #1976d2;
-  max-width: 220px;
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border: 0.25vw solid #1976d2;
+  max-width: 25vw;
+  font-size: 1.8vw;
+  margin-bottom: 1vh;
+  box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.07);
 }
 
 .speech-bubble::before {
   content: '';
   position: absolute;
-  left: -18px; /* Position the tail to the left */
-  bottom: 18px; /* Vertically center the tail */
+  left: -2.25vw; /* Position the tail to the left */
+  bottom: 2.25vw; /* Vertically center the tail */
   width: 0;
   height: 0;
-  border-top: 12px solid transparent;
-  border-bottom: 12px solid transparent;
-  border-right: 18px solid #1976d2; /* Tail border color */
+  border-top: 1.5vw solid transparent;
+  border-bottom: 1.5vw solid transparent;
+  border-right: 2.25vw solid #1976d2; /* Tail border color */
 }
 
 .speech-bubble::after {
   content: '';
   position: absolute;
-  left: -14px; /* Position the tail to the left */
-  bottom: 20px; /* Vertically center the tail */
+  left: -1.75vw; /* Position the tail to the left */
+  bottom: 2.5vw; /* Vertically center the tail */
   width: 0;
   height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 14px solid #fff; /* Tail fill color */
+  border-top: 1.25vw solid transparent;
+  border-bottom: 1.25vw solid transparent;
+  border-right: 1.75vw solid #fff; /* Tail fill color */
 }

@@ -26,19 +26,19 @@ interface AnimationMenuProps {
 
 export default function AnimationMenu({ selected, onSelect }: AnimationMenuProps) {
   return (
-    <div style={{ width: 200, padding: 16 }}>
+    <div style={{ width: '25vw', padding: '2vw' }}>
       {animations.map(anim => (
         <button
           key={anim.key}
           style={{
             display: 'block',
-            marginBottom: 8,
+            marginBottom: '1vh',
             background: selected === anim.key ? '#4caf50' : '#eee',
             color: selected === anim.key ? 'white' : 'black',
             width: '100%',
-            padding: 12,
+            padding: '1.5vw',
             border: 'none',
-            borderRadius: 4,
+            borderRadius: '0.5vw',
             cursor: 'pointer'
           }}
           onClick={() => onSelect(anim.key)}

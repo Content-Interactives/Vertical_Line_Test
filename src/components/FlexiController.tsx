@@ -37,13 +37,13 @@ export default function FlexiController({
         disabled={sliderDisabled}
       />
       <div style={{ width: maxValue, display: 'flex', alignItems: 'flex-end', marginTop: 16 }}>
-        <img src={flexiImg} alt="Flexi" style={{ width: 80, height: 80 }} />
-        <div className="speech-bubble" style={{ marginLeft: 16, marginBottom: 8 }}>
+        <img src={flexiImg} alt="Flexi" style={{ width: '10vw', height: '10vw' }} />
+        <div className="speech-bubble" style={{ marginLeft: '2vw', marginBottom: '1vh' }}>
           {speechText}
         </div>
       </div>
       {isTestFailed && (
-        <div style={{ color: 'red', marginTop: 8 }}>
+        <div style={{ color: 'red', marginTop: '1vh' }}>
           Vertical line test failed: more than one intersection!
         </div>
       )}
