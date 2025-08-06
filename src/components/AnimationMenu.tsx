@@ -14,11 +14,6 @@ const animations = [
   { key: 'parabola', label: <MiniParabolaGraph /> },
   { key: 'parabola90', label: <MiniParabola2Graph /> },
   { key: 'draw', label: <MiniDrawIcon /> },
-  // TODO: Create an interactive that is a whole new graph to draw.
-  // TODO: Add logic on it ending the function to show it is a valid function?
-  // TODO: Move buttons on the top
-  // TODO: Host the local code
-  // LATER TODO: Draw ur own function
 
 //   { key: 'invertedSinWave', label: 'SinWave'}
   // Add more as needed
