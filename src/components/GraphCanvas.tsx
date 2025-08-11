@@ -71,20 +71,26 @@ function drawGraph(
   drawAxes(ctx, width, height);
   const selectedAnim = allAnimations.find(anim => anim.key === selectedAnimation);
   if (selectedAnim) {
-    // Scale verticalLineX from slider range (0-SLIDER_RANGE) to actual canvas width
-    const scaledX = verticalLineX !== undefined ? (verticalLineX / SLIDER_RANGE) * width : undefined;
-    
+    // Remove this line - no more scaling needed
+    // const SLIDER_RANGE = 500; // Slider goes from 0 to 500
+
+    // Change this:
+    // const scaledX = (verticalLineX / SLIDER_RANGE) * width;
+    // To this:
+    const graphX = verticalLineX;
+
+    // Use graphX directly:
     selectedAnim.draw(ctx, {
       width,
       height,
-      verticalLineX: verticalLineTestActive ? scaledX : undefined,
+      verticalLineX: verticalLineTestActive ? graphX : undefined,
     });
     
-    if (verticalLineX !== undefined && scaledX !== undefined) {
+    if (verticalLineX !== undefined && graphX !== undefined) {
       // Get the intersection y for the selected animation (no need to draw line again, animation already did it)
       if (selectedAnim && selectedAnim.getIntersection) {
-        const ys = selectedAnim.getIntersection(scaledX, width, height);
-        ys.forEach(y => drawIntersectionDot(ctx, scaledX, y));
+        const ys = selectedAnim.getIntersection(graphX, width, height);
+        ys.forEach(y => drawIntersectionDot(ctx, graphX, y));
       }
     }
   }

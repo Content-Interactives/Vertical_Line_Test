@@ -32,12 +32,11 @@ type FlexiSliderRowProps = {
   handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   sliderDisabled: boolean;
   isDrawMode: boolean;
-  // Remove these props - we don't need them anymore
-  // hasDrawing: boolean;
-  // isActivelyDrawing: boolean;
+  maxValue: number; // Add this
+  onReset: () => void; // Add this
 };
 
-function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, sliderDisabled, isDrawMode }: FlexiSliderRowProps) {
+function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, sliderDisabled, isDrawMode, maxValue, onReset }: FlexiSliderRowProps) {
   let speechText = "Checking..";
   
   if (isDrawMode) {
@@ -56,12 +55,30 @@ function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, slider
       <input
         type="range"
         min={0}
-        max={500}
+        max={maxValue} // Change from 500 to maxValue
         value={verticalLineX}
         onChange={handleSliderChange}
         style={{ width: '100%', cursor: 'pointer' }}
         disabled={sliderDisabled}
       />
+      
+      {/* Add the refresh button */}
+      <button
+        onClick={onReset}
+        style={{
+          marginTop: '1vh',
+          padding: '8px 16px',
+          backgroundColor: '#4CAF50',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontSize: '14px',
+          fontWeight: 'bold'
+        }}
+      >
+         Refresh Test
+      </button>
       <div style={{ width: '60vw', display: 'flex', alignItems: 'flex-end', marginTop: '2vh' }}>
         <img src={flexiImg} alt="Flexi" style={{ width: '10vw', height: '10vw' }} />
         <div className="speech-bubble" style={{ marginLeft: '2vw', marginBottom: '1vh' }}>
@@ -96,6 +113,9 @@ function App() {
   // Remove these drawing state variables - we don't need them anymore
   // const [hasDrawing, setHasDrawing] = useState(false);
   // const [isActivelyDrawing, setIsActivelyDrawing] = useState(false);
+  
+  // Add this state to trigger drawing reset
+  const [resetTrigger, setResetTrigger] = useState(0);
   
   // Stable canvas size to prevent mobile viewport change resets
   const [canvasSize, setCanvasSize] = useState(() => Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6));
@@ -171,15 +191,20 @@ function App() {
   //   setIsActivelyDrawing(isActivelyDrawingState);
   // };
 
+  // Update the reset function to also trigger drawing reset
+  const handleReset = () => {
+    setVerticalLineX(0);
+    setSliderDisabled(false);
+    setResetTrigger(prev => prev + 1); // Increment to trigger drawing reset
+  };
+
   useEffect(() => {
-    // Only reset slider state when changing animations
-    if (selectedAnimation === 'draw') {
-      // Don't reset slider position - let user see where they left off
-      setSliderDisabled(false); // Reset failed state when switching to draw mode
-    }
+    // Reset all states when animation changes
+    handleReset();
   }, [selectedAnimation]);
 
-  const isAtEnd = verticalLineX === 500;
+  // Remove this hardcoded 500 value
+  const isAtEnd = verticalLineX === canvasSize; // Change from 500 to canvasSize
   const flexiImg = getFlexiImage({
     sliderDisabled,
     isAtEnd,
@@ -211,6 +236,7 @@ function App() {
                 // Remove onDrawingStateChange prop
                 width={canvasSize}
                 height={canvasSize}
+                resetTrigger={resetTrigger} // Pass the reset trigger
               />
             ) : (
               <GraphCanvas
@@ -228,9 +254,8 @@ function App() {
             handleSliderChange={handleSliderChange}
             sliderDisabled={sliderDisabled}
             isDrawMode={selectedAnimation === 'draw'}
-            // Remove these props - we don't need them anymore
-            // hasDrawing={hasDrawing}
-            // isActivelyDrawing={isActivelyDrawing}
+            maxValue={canvasSize} // Add this prop
+            onReset={handleReset} // Add this prop for the refresh button
           />
           {sliderDisabled && (
             <div style={{ color: 'red', marginTop: '1vh' }}>

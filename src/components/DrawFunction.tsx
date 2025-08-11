@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { drawVerticalLineTest, drawIntersectionDot } from './animations/verticalLineTest';
 
 // Constants
@@ -115,9 +115,10 @@ interface DrawFunctionProps {
   onDrawingStateChange?: (hasDrawing: boolean, isActivelyDrawing: boolean) => void;
   width?: number;
   height?: number;
+  resetTrigger?: number; // Add this prop to trigger drawing reset
 }
 
-export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, onDrawingStateChange, width = CANVAS_WIDTH, height = CANVAS_HEIGHT }: DrawFunctionProps) {
+export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, onDrawingStateChange, width = CANVAS_WIDTH, height = CANVAS_HEIGHT, resetTrigger }: DrawFunctionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [drawing, setDrawing] = useState(false);
   const [points, setPoints] = useState<{ x: number; y: number }[]>([]);
@@ -204,7 +205,17 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
     }
   };
 
-  // Removed the immediate useEffect notification - now we only notify on specific events
+  // Add this effect to clear drawing when resetTrigger changes
+  useEffect(() => {
+    if (resetTrigger !== undefined) {
+      setPoints([]);
+      setDrawing(false);
+      // Notify parent that drawing is cleared
+      if (onDrawingStateChange) {
+        onDrawingStateChange(false, false);
+      }
+    }
+  }, [resetTrigger, onDrawingStateChange]);
 
   // Draw the curve and vertical line
   React.useEffect(() => {
@@ -230,16 +241,16 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
     }
 
     // verticalLineX comes from slider (0-SLIDER_RANGE), scale to actual canvas width
-    const scaledX = (verticalLineX / SLIDER_RANGE) * width;
+    const graphX = verticalLineX;
     
     // Draw the vertical line using the standard function
-    drawVerticalLineTest(ctx, scaledX, height);
+    drawVerticalLineTest(ctx, graphX, height);
 
     // Calculate and draw intersection dots using proper line segment intersection
     if (points.length > 1) {
-      const intersectionYs = getDrawnCurveIntersections(points, scaledX);
+      const intersectionYs = getDrawnCurveIntersections(points, graphX);
       intersectionYs.forEach(y => {
-        drawIntersectionDot(ctx, scaledX, y);
+        drawIntersectionDot(ctx, graphX, y);
       });
       
       // Notify parent component about intersection count
