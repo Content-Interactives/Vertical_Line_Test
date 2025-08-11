@@ -24,3 +24,19 @@ code {
 html {
   font-size: 2vw;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Safari toolbar fix */
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+}
