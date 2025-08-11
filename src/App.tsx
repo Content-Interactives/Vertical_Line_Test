@@ -32,23 +32,17 @@ type FlexiSliderRowProps = {
   handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   sliderDisabled: boolean;
   isDrawMode: boolean;
-  hasDrawing: boolean;
-  isActivelyDrawing: boolean;
+  // Remove these props - we don't need them anymore
+  // hasDrawing: boolean;
+  // isActivelyDrawing: boolean;
 };
 
-function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, sliderDisabled, isDrawMode, hasDrawing, isActivelyDrawing }: FlexiSliderRowProps) {
+function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, sliderDisabled, isDrawMode }: FlexiSliderRowProps) {
   let speechText = "Checking..";
   
   if (isDrawMode) {
-    if (!hasDrawing || isActivelyDrawing) {
-      speechText = "Draw your graph!";
-    } else if (sliderDisabled) {
-      speechText = "Fail!";
-    } else if (verticalLineX === 500) {
-      speechText = "Pass!";
-    } else {
-      speechText = "Checking...";
-    }
+    // Remove hasDrawing and isActivelyDrawing checks
+    speechText = "Draw your graph!";
   } else {
     if (sliderDisabled) {
       speechText = "Fail!";
@@ -99,8 +93,9 @@ function App() {
   const [selectedAnimation, setSelectedAnimation] = useState('line');
   const [verticalLineX, setVerticalLineX] = useState(0); // default to center
   const [sliderDisabled, setSliderDisabled] = useState(false);
-  const [hasDrawing, setHasDrawing] = useState(false);
-  const [isActivelyDrawing, setIsActivelyDrawing] = useState(false);
+  // Remove these drawing state variables - we don't need them anymore
+  // const [hasDrawing, setHasDrawing] = useState(false);
+  // const [isActivelyDrawing, setIsActivelyDrawing] = useState(false);
   
   // Stable canvas size to prevent mobile viewport change resets
   const [canvasSize, setCanvasSize] = useState(() => Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6));
@@ -151,15 +146,17 @@ function App() {
       setSliderDisabled(false);
     }
 
-    // For draw mode, the intersection logic is handled by the DrawFunction component
+    // For draw mode, calculate intersections based on current drawing
     if (selectedAnimation === 'draw') {
+      // The intersection calculation will happen in the useEffect of DrawFunction
+      // which automatically calls onIntersectionChange
       return;
     }
 
-    // Find the selected animation
+    // For pre-built animations, calculate intersections
     const selectedAnim = allAnimations.find(anim => anim.key === selectedAnimation);
     if (selectedAnim && selectedAnim.getIntersection) {
-      const ys = selectedAnim.getIntersection(newX, canvasSize, canvasSize); // use dynamic canvas size
+      const ys = selectedAnim.getIntersection(newX, canvasSize, canvasSize);
       setSliderDisabled(ys.length >= 2);
     }
   };
@@ -168,20 +165,18 @@ function App() {
     setSliderDisabled(intersectionCount >= 2);
   };
 
-  const handleDrawingStateChange = (hasDrawingState: boolean, isActivelyDrawingState: boolean) => {
-    setHasDrawing(hasDrawingState);
-    setIsActivelyDrawing(isActivelyDrawingState);
-  };
+  // Remove this function - we don't need it anymore
+  // const handleDrawingStateChange = (hasDrawingState: boolean, isActivelyDrawingState: boolean) => {
+  //   setHasDrawing(hasDrawingState);
+  //   setIsActivelyDrawing(isActivelyDrawingState);
+  // };
 
   useEffect(() => {
-    // Only reset drawing state when changing TO/FROM draw mode, not between other animations
+    // Only reset slider state when changing animations
     if (selectedAnimation === 'draw') {
-      setHasDrawing(false);
-      setIsActivelyDrawing(false);
+      // Don't reset slider position - let user see where they left off
+      setSliderDisabled(false); // Reset failed state when switching to draw mode
     }
-    // Don't automatically reset slider position or disabled state - let user see the failure
-    // setSliderDisabled(false);  // Removed - keep failed state visible
-    // setVerticalLineX(0);       // Removed - keep line position
   }, [selectedAnimation]);
 
   const isAtEnd = verticalLineX === 500;
@@ -203,8 +198,7 @@ function App() {
         <header className="App-header">
           <GraphTitle />
           <div style={{
-            display: 'flex',
-            flexDirection: 'column',
+            display: 'flex', flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             height: '60vh',
@@ -214,7 +208,7 @@ function App() {
               <DrawFunction 
                 verticalLineX={verticalLineX} 
                 onIntersectionChange={handleDrawIntersectionChange}
-                onDrawingStateChange={handleDrawingStateChange}
+                // Remove onDrawingStateChange prop
                 width={canvasSize}
                 height={canvasSize}
               />
@@ -234,8 +228,9 @@ function App() {
             handleSliderChange={handleSliderChange}
             sliderDisabled={sliderDisabled}
             isDrawMode={selectedAnimation === 'draw'}
-            hasDrawing={hasDrawing}
-            isActivelyDrawing={isActivelyDrawing}
+            // Remove these props - we don't need them anymore
+            // hasDrawing={hasDrawing}
+            // isActivelyDrawing={isActivelyDrawing}
           />
           {sliderDisabled && (
             <div style={{ color: 'red', marginTop: '1vh' }}>
