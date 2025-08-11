@@ -53,7 +53,7 @@ export function drawIntersectionDot(
   ctx.save();
   ctx.beginPath();
   ctx.arc(x, y, dotRadius + 3, 0, 2 * Math.PI);
-  ctx.strokeStyle = 'purple';
+  ctx.strokeStyle = 'green';
   ctx.lineWidth = 3;
   ctx.stroke();
   ctx.restore();

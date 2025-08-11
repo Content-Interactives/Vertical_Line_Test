@@ -81,14 +81,11 @@ function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, slider
 function GraphTitle() {
   return (
     <div style={{
-      position: 'absolute',
-      top: '10px',
-      left: '50%',
-      transform: 'translateX(-50%)',
+      textAlign: 'center',
       fontSize: '3.5vw',
       fontWeight: 600,
       color: '#2e7d32',
-      zIndex: 10,
+      marginBottom: '2vh',
       pointerEvents: 'none'
     }}>
       Vertical Line Test
@@ -100,10 +97,35 @@ function App() {
   const [showTitle, setShowTitle] = useState(false);
   const [fadeOut, setFadeOut] = useState(false);
   const [selectedAnimation, setSelectedAnimation] = useState('line');
-  const [verticalLineX, setVerticalLineX] = useState(250); // default to center
+  const [verticalLineX, setVerticalLineX] = useState(0); // default to center
   const [sliderDisabled, setSliderDisabled] = useState(false);
   const [hasDrawing, setHasDrawing] = useState(false);
   const [isActivelyDrawing, setIsActivelyDrawing] = useState(false);
+  
+  // Stable canvas size to prevent mobile viewport change resets
+  const [canvasSize, setCanvasSize] = useState(() => Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6));
+  
+  // Only update canvas size on intentional resize, not mobile browser events
+  useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      // Debounce resize events to avoid mobile browser chrome showing/hiding
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const newSize = Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6);
+        // Only update if the change is significant (more than 50px) to avoid mobile browser UI changes
+        if (Math.abs(newSize - canvasSize) > 50) {
+          setCanvasSize(newSize);
+        }
+      }, 300);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout);
+    };
+  }, [canvasSize]);
 
   const handleAnimationComplete = () => {
     setShowTitle(true);
@@ -124,6 +146,11 @@ function App() {
     const newX = Number(e.target.value);
     setVerticalLineX(newX);
 
+    // If user moves slider, clear any previous failed state (manual reset)
+    if (sliderDisabled) {
+      setSliderDisabled(false);
+    }
+
     // For draw mode, the intersection logic is handled by the DrawFunction component
     if (selectedAnimation === 'draw') {
       return;
@@ -132,7 +159,7 @@ function App() {
     // Find the selected animation
     const selectedAnim = allAnimations.find(anim => anim.key === selectedAnimation);
     if (selectedAnim && selectedAnim.getIntersection) {
-      const ys = selectedAnim.getIntersection(newX, 500, 500); // use your width/height
+      const ys = selectedAnim.getIntersection(newX, canvasSize, canvasSize); // use dynamic canvas size
       setSliderDisabled(ys.length >= 2);
     }
   };
@@ -147,10 +174,14 @@ function App() {
   };
 
   useEffect(() => {
-    setSliderDisabled(false);
-    setVerticalLineX(0); // <-- Set to 0 for the left side
-    setHasDrawing(false); // Reset drawing state when changing animations
-    setIsActivelyDrawing(false); // Reset actively drawing state
+    // Only reset drawing state when changing TO/FROM draw mode, not between other animations
+    if (selectedAnimation === 'draw') {
+      setHasDrawing(false);
+      setIsActivelyDrawing(false);
+    }
+    // Don't automatically reset slider position or disabled state - let user see the failure
+    // setSliderDisabled(false);  // Removed - keep failed state visible
+    // setVerticalLineX(0);       // Removed - keep line position
   }, [selectedAnimation]);
 
   const isAtEnd = verticalLineX === 500;
@@ -170,6 +201,7 @@ function App() {
       />
       <div style={{ flex: 1 }}>
         <header className="App-header">
+          <GraphTitle />
           <div style={{
             display: 'flex',
             flexDirection: 'column',
@@ -178,19 +210,18 @@ function App() {
             height: '60vh',
             position: 'relative'
           }}>
-            <GraphTitle />
             {selectedAnimation === 'draw' ? (
               <DrawFunction 
                 verticalLineX={verticalLineX} 
                 onIntersectionChange={handleDrawIntersectionChange}
                 onDrawingStateChange={handleDrawingStateChange}
-                width={Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6)}
-                height={Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6)}
+                width={canvasSize}
+                height={canvasSize}
               />
             ) : (
               <GraphCanvas
-                width={Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6)}
-                height={Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6)}
+                width={canvasSize}
+                height={canvasSize}
                 selectedAnimation={selectedAnimation}
                 verticalLineX={verticalLineX}
                 verticalLineTestActive={true}

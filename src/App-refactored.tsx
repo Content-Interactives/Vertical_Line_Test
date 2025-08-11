@@ -18,7 +18,7 @@ function GraphTitle() {
   return (
     <div style={{
       position: 'absolute',
-      top: -50,
+      top: '10px',
       left: '50%',
       transform: 'translateX(-50%)',
       fontSize: '3.5vw',

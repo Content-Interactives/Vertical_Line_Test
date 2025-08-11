@@ -258,7 +258,11 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
         style={{ 
           border: '0.1vw solid #ccc', 
           background: 'white',
-          cursor: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 48 48\'%3e%3cg transform=\'rotate(45 24 24)\'%3e%3c!-- Pencil body (wood) --%3e%3crect x=\'22\' y=\'8\' width=\'4\' height=\'20\' fill=\'%23DEB887\' stroke=\'%23CD853F\' stroke-width=\'0.5\'/%3e%3c!-- Metal ferrule --%3e%3crect x=\'21.5\' y=\'6\' width=\'5\' height=\'3\' fill=\'%23C0C0C0\' stroke=\'%23A0A0A0\' stroke-width=\'0.5\'/%3e%3c!-- Eraser --%3e%3crect x=\'22\' y=\'4\' width=\'4\' height=\'2\' fill=\'%23FF69B4\' stroke=\'%23FF1493\' stroke-width=\'0.5\' rx=\'1\'/%3e%3c!-- Pencil tip (wood) --%3e%3cpolygon points=\'22,28 26,28 24,32\' fill=\'%23DEB887\' stroke=\'%23CD853F\' stroke-width=\'0.5\'/%3e%3c!-- Graphite tip --%3e%3cpolygon points=\'23,32 25,32 24,35\' fill=\'%232F2F2F\'/%3e%3c!-- Brand text area --%3e%3crect x=\'22.5\' y=\'12\' width=\'3\' height=\'8\' fill=\'%23F5DEB3\' opacity=\'0.7\'/%3e%3c/g%3e%3c/svg%3e") 24 24, crosshair'
+          cursor: 'url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'48\' height=\'48\' viewBox=\'0 0 48 48\'%3e%3cg transform=\'rotate(45 24 24)\'%3e%3c!-- Pencil body (wood) --%3e%3crect x=\'22\' y=\'8\' width=\'4\' height=\'20\' fill=\'%23DEB887\' stroke=\'%23CD853F\' stroke-width=\'0.5\'/%3e%3c!-- Metal ferrule --%3e%3crect x=\'21.5\' y=\'6\' width=\'5\' height=\'3\' fill=\'%23C0C0C0\' stroke=\'%23A0A0A0\' stroke-width=\'0.5\'/%3e%3c!-- Eraser --%3e%3crect x=\'22\' y=\'4\' width=\'4\' height=\'2\' fill=\'%23FF69B4\' stroke=\'%23FF1493\' stroke-width=\'0.5\' rx=\'1\'/%3e%3c!-- Pencil tip (wood) --%3e%3cpolygon points=\'22,28 26,28 24,32\' fill=\'%23DEB887\' stroke=\'%23CD853F\' stroke-width=\'0.5\'/%3e%3c!-- Graphite tip --%3e%3cpolygon points=\'23,32 25,32 24,35\' fill=\'%232F2F2F\'/%3e%3c!-- Brand text area --%3e%3crect x=\'22.5\' y=\'12\' width=\'3\' height=\'8\' fill=\'%23F5DEB3\' opacity=\'0.7\'/%3e%3c/g%3e%3c/svg%3e") 24 24, crosshair',
+          touchAction: 'none', // Prevent mobile gestures from interfering
+          userSelect: 'none',   // Prevent text selection on mobile
+          WebkitUserSelect: 'none', // Webkit-specific
+          WebkitTouchCallout: 'none' // Prevent callout on iOS
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
