@@ -7,6 +7,7 @@ import FlexiConfident from '../Ck12_Assets/Flexi_Confident.svg';
 import FlexiWorried from '../Ck12_Assets/Flexi_Worried.svg';
 import FlexiExcited from '../Ck12_Assets/Flexi_Excited.svg';
 import DrawFunction from './components/DrawFunction';
+import { VERTICAL_LINE_TEST } from './constants';
 
 function getFlexiImage({
   sliderDisabled,
@@ -131,11 +132,6 @@ function App() {
     }, 1000);
   };
 
-  // Reset the fade states when the animation is restarted
-  const handleAnimationStart = () => {
-    setShowTitle(false);
-    setFadeOut(false);
-  };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newX = Number(e.target.value);
@@ -157,12 +153,12 @@ function App() {
     const selectedAnim = allAnimations.find(anim => anim.key === selectedAnimation);
     if (selectedAnim && selectedAnim.getIntersection) {
       const ys = selectedAnim.getIntersection(newX, canvasSize, canvasSize);
-      setSliderDisabled(ys.length >= 2);
+      setSliderDisabled(ys.length >= VERTICAL_LINE_TEST.INTERSECTION_THRESHOLD);
     }
   };
 
   const handleDrawIntersectionChange = (intersectionCount: number) => {
-    setSliderDisabled(intersectionCount >= 2);
+    setSliderDisabled(intersectionCount >= VERTICAL_LINE_TEST.INTERSECTION_THRESHOLD);
   };
 
   // Remove this function - we don't need it anymore
