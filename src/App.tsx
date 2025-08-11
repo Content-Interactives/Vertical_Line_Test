@@ -8,6 +8,7 @@ import FlexiWorried from '../Ck12_Assets/Flexi_Worried.svg';
 import FlexiExcited from '../Ck12_Assets/Flexi_Excited.svg';
 import DrawFunction from './components/DrawFunction';
 import { VERTICAL_LINE_TEST } from './constants';
+import { CANVAS_DIMENSIONS } from './constants';
 
 function getFlexiImage({
   sliderDisabled,
@@ -152,7 +153,9 @@ function App() {
     // For pre-built animations, calculate intersections
     const selectedAnim = allAnimations.find(anim => anim.key === selectedAnimation);
     if (selectedAnim && selectedAnim.getIntersection) {
-      const ys = selectedAnim.getIntersection(newX, canvasSize, canvasSize);
+      // Scale slider value to canvas size using existing constants
+      const scaledX = (newX / CANVAS_DIMENSIONS.WIDTH) * canvasSize;
+      const ys = selectedAnim.getIntersection(scaledX, canvasSize, canvasSize);
       setSliderDisabled(ys.length >= VERTICAL_LINE_TEST.INTERSECTION_THRESHOLD);
     }
   };
