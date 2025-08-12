@@ -34,9 +34,8 @@ type FlexiSliderRowProps = {
   handleSliderChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   sliderDisabled: boolean;
   isDrawMode: boolean;
-  // Remove these props - we don't need them anymore
-  // hasDrawing: boolean;
-  // isActivelyDrawing: boolean;
+  hasDrawing: boolean;
+  isActivelyDrawing: boolean;
 };
 
 function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, sliderDisabled, isDrawMode }: FlexiSliderRowProps) {
@@ -137,6 +136,11 @@ function App() {
     }, 1000);
   };
 
+  // Reset function to clear failed state and reset vertical line
+  const resetVerticalLineTest = () => {
+    setVerticalLineX(0);
+    setSliderDisabled(false);
+  };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newX = Number(e.target.value);
@@ -168,11 +172,16 @@ function App() {
     setSliderDisabled(intersectionCount >= VERTICAL_LINE_TEST.INTERSECTION_THRESHOLD);
   };
 
-  // Remove this function - we don't need it anymore
-  // const handleDrawingStateChange = (hasDrawingState: boolean, isActivelyDrawingState: boolean) => {
-  //   setHasDrawing(hasDrawingState);
-  //   setIsActivelyDrawing(isActivelyDrawingState);
-  // };
+  const handleDrawingStateChange = (hasDrawingState: boolean, isActivelyDrawingState: boolean) => {
+    setHasDrawing(hasDrawingState);
+    setIsActivelyDrawing(isActivelyDrawingState);
+  };
+
+  // Reset vertical line test when animation changes
+  const handleAnimationChange = (newAnimation: string) => {
+    setSelectedAnimation(newAnimation);
+    resetVerticalLineTest();
+  };
 
   useEffect(() => {
     // Only reset slider state when changing animations
@@ -195,7 +204,7 @@ function App() {
     <div className="App" style={{ display: 'flex', flexDirection: 'row', minHeight: '100vh' }}>
       <AnimationMenu
         selected={selectedAnimation}
-        onSelect={setSelectedAnimation}
+        onSelect={handleAnimationChange}
       />
       <div style={{ flex: 1 }}>
         <header className="App-header">
@@ -211,7 +220,7 @@ function App() {
               <DrawFunction 
                 verticalLineX={verticalLineX} 
                 onIntersectionChange={handleDrawIntersectionChange}
-                // Remove onDrawingStateChange prop
+                onDrawingStateChange={handleDrawingStateChange}
                 width={canvasSize}
                 height={canvasSize}
               />
@@ -231,9 +240,8 @@ function App() {
             handleSliderChange={handleSliderChange}
             sliderDisabled={sliderDisabled}
             isDrawMode={selectedAnimation === 'draw'}
-            // Remove these props - we don't need them anymore
-            // hasDrawing={hasDrawing}
-            // isActivelyDrawing={isActivelyDrawing}
+            hasDrawing={hasDrawing}
+            isActivelyDrawing={isActivelyDrawing}
           />
 
         </header>
