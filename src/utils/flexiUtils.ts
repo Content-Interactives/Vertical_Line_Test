@@ -31,7 +31,7 @@ export function getFlexiImage(state: FlexiState): string {
  * Gets the appropriate speech text for Flexi
  */
 export function getFlexiSpeechText(isTestFailed: boolean, isTestPassed: boolean): string {
-  if (isTestFailed) return "Fail";
-  if (isTestPassed) return "Pass";
-  return "checking";
+  if (isTestFailed) return "Test failed. This is not a function.";
+  if (isTestPassed) return "Test passed! This is a function.";
+  return "Use the slider to perform the vertical line test.";
 }

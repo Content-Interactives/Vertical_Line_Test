@@ -42,11 +42,7 @@ export default function FlexiController({
           {speechText}
         </div>
       </div>
-      {isTestFailed && (
-        <div style={{ color: 'red', marginTop: '1vh' }}>
-          Vertical line test failed: more than one intersection!
-        </div>
-      )}
+      {isTestFailed}
     </div>
   );
 }

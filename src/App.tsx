@@ -231,11 +231,7 @@ function App() {
             // hasDrawing={hasDrawing}
             // isActivelyDrawing={isActivelyDrawing}
           />
-          {sliderDisabled && (
-            <div style={{ color: 'red', marginTop: '1vh' }}>
-              Vertical line test failed: more than one intersection!
-            </div>
-          )}
+          {sliderDisabled}
         </header>
       </div>
     </div>
