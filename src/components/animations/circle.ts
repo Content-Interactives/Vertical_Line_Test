@@ -17,14 +17,15 @@ export const circle = {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Draw vertical line test if requested
+      // Draw vertical line and dots if requested
       if (verticalLineX !== undefined) {
         drawVerticalLineTest(ctx, verticalLineX, height);
-        // Calculate intersection(s) and draw dot(s)
+        
+        // Calculate intersections and draw dots
         const dx = verticalLineX - cx;
         if (Math.abs(dx) <= radius) {
           const dy = Math.sqrt(radius * radius - dx * dx);
-          // Two intersection points (top and bottom)
+          // Draw both intersection points (top and bottom)
           drawIntersectionDot(ctx, verticalLineX, cy - dy);
           drawIntersectionDot(ctx, verticalLineX, cy + dy);
         }
@@ -39,7 +40,14 @@ export const circle = {
       const cy = height / 2;
       const radius = Math.min(width, height) / 3;
       const dx = x - cx;
+      
+      // No intersection if vertical line is outside the circle
       if (Math.abs(dx) > radius) return [];
+      
+      // If vertical line passes exactly through the center, it's a function (1 intersection point)
+      if (Math.abs(dx) === 0) return [cy];
+      
+      // If vertical line passes through the circle but not through center, it's not a function (2 intersection points)
       const dy = Math.sqrt(radius * radius - dx * dx);
       return [cy - dy, cy + dy];
     }

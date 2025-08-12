@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [react()],
-  base: '/Vertical_Line_Test/',
-}) 
+  base: command === 'serve' ? '/' : '/Vertical_Line_Test/',
+})) 

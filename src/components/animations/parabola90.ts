@@ -33,7 +33,14 @@ export const parabola90 = {
       const cx = width / 2;
       const cy = height / 2;
       const t2 = (x - cx) / 40;
+      
+      // No intersection if vertical line is to the left of the parabola
       if (t2 < 0) return [];
+      
+      // If vertical line passes exactly through the vertex, it's a function (1 intersection point)
+      if (t2 === 0) return [cy];
+      
+      // If vertical line passes through the parabola but not through vertex, it's not a function (2 intersection points)
       const t = Math.sqrt(t2);
       return [cy + t * 40, cy - t * 40];
     }
