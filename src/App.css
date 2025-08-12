@@ -90,27 +90,3 @@ h1 {
   margin-bottom: 1vh;
   box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.07);
 }
-
-.speech-bubble::before {
-  content: '';
-  position: absolute;
-  left: -2.25vw; /* Position the tail to the left */
-  bottom: 2.25vw; /* Vertically center the tail */
-  width: 0;
-  height: 0;
-  border-top: 1.5vw solid transparent;
-  border-bottom: 1.5vw solid transparent;
-  border-right: 2.25vw solid #1976d2; /* Tail border color */
-}
-
-.speech-bubble::after {
-  content: '';
-  position: absolute;
-  left: -1.75vw; /* Position the tail to the left */
-  bottom: 2.5vw; /* Vertically center the tail */
-  width: 0;
-  height: 0;
-  border-top: 1.25vw solid transparent;
-  border-bottom: 1.25vw solid transparent;
-  border-right: 1.75vw solid #fff; /* Tail fill color */
-}
