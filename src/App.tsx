@@ -43,8 +43,13 @@ function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, slider
   let speechText = "Use the slider to perform the vertical line test.";
   
   if (isDrawMode) {
-    // Remove hasDrawing and isActivelyDrawing checks
-    speechText = "Draw your graph!";
+    if (sliderDisabled) {
+      speechText = "Test failed. This is not a function.";
+    } else if (verticalLineX === 500) {
+      speechText = "Test passed! This is a function.";
+    } else {
+      speechText = "Draw your graph!";
+    }
   } else {
     if (sliderDisabled) {
       speechText = "Test failed. This is not a function.";
@@ -95,9 +100,8 @@ function App() {
   const [selectedAnimation, setSelectedAnimation] = useState('line');
   const [verticalLineX, setVerticalLineX] = useState(0); // default to center
   const [sliderDisabled, setSliderDisabled] = useState(false);
-  // Remove these drawing state variables - we don't need them anymore
-  // const [hasDrawing, setHasDrawing] = useState(false);
-  // const [isActivelyDrawing, setIsActivelyDrawing] = useState(false);
+  const [hasDrawing, setHasDrawing] = useState(false);
+  const [isActivelyDrawing, setIsActivelyDrawing] = useState(false);
   
   // Stable canvas size to prevent mobile viewport change resets
   const [canvasSize, setCanvasSize] = useState(() => Math.min(window.innerWidth * 0.6, window.innerHeight * 0.6));
