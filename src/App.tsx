@@ -40,17 +40,17 @@ type FlexiSliderRowProps = {
 };
 
 function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, sliderDisabled, isDrawMode }: FlexiSliderRowProps) {
-  let speechText = "Checking..";
+  let speechText = "Use the slider to perform the vertical line test.";
   
   if (isDrawMode) {
     // Remove hasDrawing and isActivelyDrawing checks
     speechText = "Draw your graph!";
   } else {
     if (sliderDisabled) {
-      speechText = "Fail!";
-    } else if (verticalLineX === 500) {
-      speechText = "Pass!";
-    }
+      speechText = "Test failed. This is not a function.";
+          } else if (verticalLineX === 500) {
+        speechText = "Test passed! This is a function.";
+      }
   }
 
   return (
@@ -231,7 +231,7 @@ function App() {
             // hasDrawing={hasDrawing}
             // isActivelyDrawing={isActivelyDrawing}
           />
-          {sliderDisabled}
+
         </header>
       </div>
     </div>
