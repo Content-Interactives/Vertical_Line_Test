@@ -20,7 +20,9 @@ export const invertedSinWave = {
       if (verticalLineX !== undefined) {
         drawVerticalLineTest(ctx, verticalLineX, height);
         const ys = invertedSinWave.getIntersection(verticalLineX, width, height);
-        ys.forEach(y => drawIntersectionDot(ctx, verticalLineX, y));
+        const isFailed = ys.length > 1; // Inverted sin wave is a function, so should never fail
+        
+        ys.forEach(y => drawIntersectionDot(ctx, verticalLineX, y, 6, isFailed));
       }
     },
     getIntersection: (
