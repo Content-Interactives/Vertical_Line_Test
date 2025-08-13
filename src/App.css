@@ -85,8 +85,15 @@ h1 {
   padding: 1.5vw 3vw;
   color: #1976d2;
   border: 0.25vw solid #1976d2;
-  max-width: 25vw;
+  max-width: 40vw; /* Increased from 25vw to 40vw for wider bubble */
   font-size: 1.8vw;
   margin-bottom: 1vh;
   box-shadow: 0 0.5vw 1vw rgba(0,0,0,0.07);
+  /* Make speech bubble expand to the left instead of upward */
+  transform-origin: right bottom;
+  /* Allow text to wrap but prevent upward expansion */
+  word-wrap: break-word;
+  min-height: fit-content;
+  /* Ensure the bubble stays anchored to the right */
+  margin-right: auto;
 }

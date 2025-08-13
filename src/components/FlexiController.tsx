@@ -38,7 +38,7 @@ export default function FlexiController({
       />
       <div style={{ width: maxValue, display: 'flex', alignItems: 'flex-end', marginTop: 16 }}>
         <img src={flexiImg} alt="Flexi" style={{ width: '10vw', height: '10vw' }} />
-        <div className="speech-bubble" style={{ marginLeft: '2vw', marginBottom: '1vh' }}>
+        <div className="speech-bubble" style={{ marginLeft: '2vw', marginBottom: '1vh', marginRight: 'auto' }}>
           {speechText}
         </div>
       </div>

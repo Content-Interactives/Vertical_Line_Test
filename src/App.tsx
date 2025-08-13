@@ -70,7 +70,7 @@ function FlexiSliderColumn({ flexiImg, verticalLineX, handleSliderChange, slider
       />
       <div style={{ width: '60vw', display: 'flex', alignItems: 'flex-end', marginTop: '2vh' }}>
         <img src={flexiImg} alt="Flexi" style={{ width: '10vw', height: '10vw' }} />
-        <div className="speech-bubble" style={{ marginLeft: '2vw', marginBottom: '1vh' }}>
+        <div className="speech-bubble" style={{ marginLeft: '2vw', marginBottom: '1vh', marginRight: 'auto' }}>
           {speechText}
         </div>
       </div>
