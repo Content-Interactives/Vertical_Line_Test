@@ -255,8 +255,10 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
     let intersectionCount = 0;
     if (points.length > 1) {
       const intersectionYs = getDrawnCurveIntersections(points, scaledX);
+      const isFailed = intersectionYs.length > 1; // Vertical line test fails if more than 1 intersection
+      
       intersectionYs.forEach(y => {
-        drawIntersectionDot(ctx, scaledX, y);
+        drawIntersectionDot(ctx, scaledX, y, 6, isFailed);
       });
       intersectionCount = intersectionYs.length;
     }

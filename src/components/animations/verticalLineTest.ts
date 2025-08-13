@@ -47,22 +47,26 @@ export function drawIntersectionDot(
   ctx: CanvasRenderingContext2D,
   x: number,
   y: number,
-  dotRadius: number = 6
+  dotRadius: number = 6,
+  failed: boolean = false
 ) {
-  // Draw purple highlight
+  const outerColor = failed ? 'red' : 'green';
+  const innerColor = failed ? 'red' : 'green';
+  
+  // Draw outer highlight
   ctx.save();
   ctx.beginPath();
   ctx.arc(x, y, dotRadius + 3, 0, 2 * Math.PI);
-  ctx.strokeStyle = 'green';
+  ctx.strokeStyle = outerColor;
   ctx.lineWidth = 3;
   ctx.stroke();
   ctx.restore();
 
-  // Draw green dot
+  // Draw inner dot
   ctx.save();
   ctx.beginPath();
   ctx.arc(x, y, dotRadius, 0, 2 * Math.PI);
-  ctx.fillStyle = 'green';
+  ctx.fillStyle = innerColor;
   ctx.fill();
   ctx.restore();
 }

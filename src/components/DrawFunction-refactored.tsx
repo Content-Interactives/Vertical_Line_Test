@@ -64,8 +64,10 @@ export default function DrawFunction({
     // Calculate and draw intersection dots
     if (points.length > 1) {
       const intersectionYs = getDrawnCurveIntersections(points, verticalLineX);
+      const isFailed = intersectionYs.length > 1; // Vertical line test fails if more than 1 intersection
+      
       intersectionYs.forEach(y => {
-        drawIntersectionDot(ctx, verticalLineX, y);
+        drawIntersectionDot(ctx, verticalLineX, y, 6, isFailed);
       });
       
       // Notify parent about intersection count

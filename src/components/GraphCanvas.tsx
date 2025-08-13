@@ -84,7 +84,9 @@ function drawGraph(
       // Get the intersection y for the selected animation (no need to draw line again, animation already did it)
       if (selectedAnim && selectedAnim.getIntersection) {
         const ys = selectedAnim.getIntersection(scaledX, width, height);
-        ys.forEach(y => drawIntersectionDot(ctx, scaledX, y));
+        const isFailed = ys.length > 1; // Vertical line test fails if more than 1 intersection
+        
+        ys.forEach(y => drawIntersectionDot(ctx, scaledX, y, 6, isFailed));
       }
     }
   }

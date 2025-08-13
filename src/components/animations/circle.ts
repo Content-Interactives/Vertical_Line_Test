@@ -25,9 +25,11 @@ export const circle = {
         const dx = verticalLineX - cx;
         if (Math.abs(dx) <= radius) {
           const dy = Math.sqrt(radius * radius - dx * dx);
+          const isFailed = Math.abs(dx) !== 0; // Circle fails vertical line test unless line passes through center
+          
           // Draw both intersection points (top and bottom)
-          drawIntersectionDot(ctx, verticalLineX, cy - dy);
-          drawIntersectionDot(ctx, verticalLineX, cy + dy);
+          drawIntersectionDot(ctx, verticalLineX, cy - dy, 6, isFailed);
+          drawIntersectionDot(ctx, verticalLineX, cy + dy, 6, isFailed);
         }
       }
     },

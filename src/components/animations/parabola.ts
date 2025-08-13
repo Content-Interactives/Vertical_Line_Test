@@ -24,7 +24,9 @@ export const parabola = {
       if (verticalLineX !== undefined) {
         drawVerticalLineTest(ctx, verticalLineX, height);
         const ys = parabola.getIntersection(verticalLineX, width, height);
-        ys.forEach(y => drawIntersectionDot(ctx, verticalLineX, y));
+        const isFailed = ys.length > 1; // Vertical line test fails if more than 1 intersection
+        
+        ys.forEach(y => drawIntersectionDot(ctx, verticalLineX, y, 6, isFailed));
       }
     },
     getIntersection: (
