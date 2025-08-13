@@ -13,7 +13,7 @@ export function animateVerticalLineTest(
     drawGraph(ctx);
     // Draw vertical line
     ctx.save();
-    ctx.strokeStyle = 'red';
+    ctx.strokeStyle = 'black';
     ctx.setLineDash([8, 6]);
     ctx.beginPath();
     ctx.moveTo(x, 0);
@@ -31,7 +31,7 @@ export function animateVerticalLineTest(
   animate();
 }
 
-export function drawVerticalLineTest(ctx: CanvasRenderingContext2D, x: number, height: number, color: string = 'rgba(255,0,0,0.7)') {
+export function drawVerticalLineTest(ctx: CanvasRenderingContext2D, x: number, height: number, color: string = 'black') {
   ctx.save();
   ctx.strokeStyle = color;
   ctx.lineWidth = 2;

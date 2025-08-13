@@ -166,6 +166,14 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
     if (!drawing) return;
     const coords = getEventCoordinates(e, e.target as HTMLCanvasElement);
     setPoints((prev) => [...prev, coords]);
+    
+    // Real-time intersection detection during drawing
+    if (onIntersectionChange && points.length > 0) {
+      const scaledX = (verticalLineX / SLIDER_RANGE) * width;
+      const newPoints = [...points, coords];
+      const intersectionYs = getDrawnCurveIntersections(newPoints, scaledX);
+      onIntersectionChange(intersectionYs.length);
+    }
   };
 
   // Draw as touch moves
@@ -174,6 +182,14 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
     if (!drawing) return;
     const coords = getEventCoordinates(e, e.target as HTMLCanvasElement);
     setPoints((prev) => [...prev, coords]);
+    
+    // Real-time intersection detection during drawing
+    if (onIntersectionChange && points.length > 0) {
+      const scaledX = (verticalLineX / SLIDER_RANGE) * width;
+      const newPoints = [...points, coords];
+      const intersectionYs = getDrawnCurveIntersections(newPoints, scaledX);
+      onIntersectionChange(intersectionYs.length);
+    }
   };
 
   // Stop drawing (mouse)
@@ -236,16 +252,18 @@ export default function DrawFunction({ verticalLineX = 0, onIntersectionChange, 
     drawVerticalLineTest(ctx, scaledX, height);
 
     // Calculate and draw intersection dots using proper line segment intersection
+    let intersectionCount = 0;
     if (points.length > 1) {
       const intersectionYs = getDrawnCurveIntersections(points, scaledX);
       intersectionYs.forEach(y => {
         drawIntersectionDot(ctx, scaledX, y);
       });
-      
-      // Notify parent component about intersection count
-      if (onIntersectionChange) {
-        onIntersectionChange(intersectionYs.length);
-      }
+      intersectionCount = intersectionYs.length;
+    }
+    
+    // Always notify parent component about intersection count (even when 0)
+    if (onIntersectionChange) {
+      onIntersectionChange(intersectionCount);
     }
   }, [points, verticalLineX, onIntersectionChange, width, height]);
 
