@@ -19,7 +19,7 @@ This interactive is currently featured in the following locations:
   - 👉 PRODUCTION: [PENDING]  
   - 👉 MASTER: [PENDING]
 - 📘 **CK-12 Flexbooks**  
-  - 👉 [PENDING: Book/lesson link where this interactive appears]
+  - 👉 1.14 Recognizing Functions: [https://flexbooks.ck12.org/cbook/ck-12-basic-algebra-concepts/section/1.14/primary/lesson/vertical-line-test-bsc-alg/](https://flexbooks.ck12.org/cbook/ck-12-basic-algebra-concepts/section/1.14/primary/lesson/vertical-line-test-bsc-alg/)
 
 ---
 
